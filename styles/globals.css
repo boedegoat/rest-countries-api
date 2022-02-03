@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    @apply min-h-screen bg-light-background text-light-text dark:bg-dark-background dark:text-dark-text;
+  }
+}
+
 @layer components {
   .wrapper {
     @apply px-5;
