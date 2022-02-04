@@ -1,7 +1,7 @@
 export const REST_COUNTRIES_API = 'https://restcountries.com/v3.1'
 
 export function format(countries) {
-  if (!countries) return null
+  if (!Array.isArray(countries)) return null
   return countries?.map((country) => ({
     name: country.name.common,
     population: country.population,
