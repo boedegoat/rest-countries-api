@@ -2,7 +2,7 @@ import { SearchIcon } from '@heroicons/react/outline'
 import useDebounce from 'lib/hooks/useDebounce'
 import Dropdown from './Dropdown'
 import { useAppContext } from 'lib/AppProvider'
-import { REST_COUNTRIES_API } from 'lib/countries'
+import { getCountryByName, getCountryByRegion } from 'lib/countries'
 import { useEffect } from 'react'
 
 export default function Form() {
@@ -11,20 +11,19 @@ export default function Form() {
 
   // Handle user search for country
   // Each user typed, new countries will be fetched after 200 ms
-  const handleSearch = async () => {
-    const res = await fetch(REST_COUNTRIES_API + `/name/${searchCountry}`)
-    const newFiltered = await res.json()
-    setFilteredCountries(newFiltered)
-  }
-  useDebounce(handleSearch, 200, [searchCountry])
+  // prettier-ignore
+  useDebounce(async () => {
+    if (!searchCountry) return
+    const searchResults = await getCountryByName(searchCountry)
+    setFilteredCountries(searchResults)
+  }, 200, [searchCountry])
 
-  const handleRegion = async () => {
-    if (!region) return
-    const res = await fetch(REST_COUNTRIES_API + `/region/${region}`)
-    const newFiltered = await res.json()
-    setFilteredCountries(newFiltered)
-  }
   useEffect(() => {
+    async function handleRegion() {
+      if (!region) return
+      const filterRegionResults = await getCountryByRegion(region)
+      setFilteredCountries(filterRegionResults)
+    }
     handleRegion()
   }, [region])
 

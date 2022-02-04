@@ -4,30 +4,27 @@ import { useRef } from 'react'
 
 export default function Countries({ initCountries }) {
   const { filteredCountries, searchCountry, region } = useAppContext()
-
-  // check if searchCountry or region is not empty
-  // show filteredCountries instead
+  const countries = useRef([])
   const isFilterMode = region || searchCountry
   const isFilterSuccess = filteredCountries?.status !== 404
 
-  const countries = useRef([])
+  // check if searchCountry or region is not empty
+  // show filteredCountries instead
   if (isFilterMode) {
     countries.current = isFilterSuccess ? filteredCountries : []
   } else {
     countries.current = initCountries
   }
 
+  // TODO : IMPLEMENT LAZY LIST, SHOW 4 COUNTRY PER NEXT RENDER
   return (
     <div className="wrapper mx-7 my-10 space-y-10">
-      {countries.current?.map((country, id) => (
-        <Link key={id} href={`/${country.name.common}`}>
+      {countries.current?.slice(0, 4).map((country, id) => (
+        <Link key={id} href={`/${country.name}`}>
           <a className="block overflow-hidden rounded-md bg-light-elements shadow-md dark:bg-dark-elements">
-            <img
-              src={country.flags.svg}
-              alt={`${country.name.common}'s flag`}
-            />
+            <img src={country.flag} alt={`${country.name}'s flag`} />
             <div className="px-7 pt-5 pb-10">
-              <p className="text-lg font-extrabold">{country.name.common}</p>
+              <p className="text-lg font-extrabold">{country.name}</p>
               <div className="mt-4 space-y-1">
                 <p className="text-sm">
                   <span className="font-extrabold">Population</span>:{' '}
