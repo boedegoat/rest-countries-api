@@ -1,23 +1,13 @@
 import { SearchIcon } from '@heroicons/react/outline'
-import useDebounce from 'hooks/useDebounce'
-import useUpdateEffect from 'hooks/useUpdateEffect'
+import useDebounce from 'lib/hooks/useDebounce'
 import Dropdown from './Dropdown'
+import { useAppContext } from 'lib/AppProvider'
+import { REST_COUNTRIES_API } from 'lib/countries'
+import { useEffect } from 'react'
 
-export default function Form({
-  searchCountry,
-  setSearchCountry,
-  region,
-  setRegion,
-  setFilteredCountries,
-  REST_COUNTRIES_API,
-}) {
-  // Skip first render
-  // If searchCountry empty, delete all filtered countries
-  useUpdateEffect(() => {
-    if (!searchCountry) {
-      setFilteredCountries(null)
-    }
-  }, [searchCountry])
+export default function Form() {
+  const { searchCountry, setSearchCountry, setFilteredCountries, region } =
+    useAppContext()
 
   // Handle user search for country
   // Each user typed, new countries will be fetched after 200 ms
@@ -27,6 +17,16 @@ export default function Form({
     setFilteredCountries(newFiltered)
   }
   useDebounce(handleSearch, 200, [searchCountry])
+
+  const handleRegion = async () => {
+    if (!region) return
+    const res = await fetch(REST_COUNTRIES_API + `/region/${region}`)
+    const newFiltered = await res.json()
+    setFilteredCountries(newFiltered)
+  }
+  useEffect(() => {
+    handleRegion()
+  }, [region])
 
   return (
     <div className="wrapper mt-8 space-y-9">
