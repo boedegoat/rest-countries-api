@@ -8,6 +8,7 @@ export function format(countries) {
     region: country.region,
     flag: country.flags?.svg,
     capital: country.capital || 'N/A',
+    slug: country.name.common.toLowerCase().replace(/\s/g, '-'),
   }))
 }
 

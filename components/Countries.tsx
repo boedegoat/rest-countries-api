@@ -20,7 +20,7 @@ export default function Countries({ initCountries }) {
   return (
     <div className="wrapper mx-7 my-10 space-y-10">
       {countries.current?.slice(0, 4).map((country, id) => (
-        <Link key={id} href={`/${country.name}`}>
+        <Link key={id} href={'/' + country.slug}>
           <a className="block overflow-hidden rounded-md bg-light-elements shadow-md dark:bg-dark-elements">
             <img src={country.flag} alt={`${country.name}'s flag`} />
             <div className="px-7 pt-5 pb-10">
