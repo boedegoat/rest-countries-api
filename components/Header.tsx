@@ -1,9 +1,9 @@
 import { MoonIcon } from '@heroicons/react/outline'
 import { MoonIcon as MoonIconSolid } from '@heroicons/react/solid'
-import useDarkMode from 'lib/hooks/useDarkMode'
+import { useTheme } from 'lib/ThemeProvider'
 
 export default function Header() {
-  const [theme, setTheme] = useDarkMode()
+  const { theme, setTheme } = useTheme()
   const moonIconClass = 'w-5'
 
   return (

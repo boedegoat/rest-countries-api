@@ -2,7 +2,7 @@ import { SetThemeType, ThemeType } from 'lib/typings'
 import { useEffect, useState } from 'react'
 
 // to avoid FOUC (Flash of unstyled content)
-export default function useDarkMode(): [ThemeType, SetThemeType] {
+export default function useDarkMode() {
   const [theme, setCurrentTheme] = useState<ThemeType>()
 
   const handleThemeChange = () => {
@@ -49,5 +49,5 @@ export default function useDarkMode(): [ThemeType, SetThemeType] {
     handleThemeChange()
   }, [])
 
-  return [theme, setTheme]
+  return { theme, setTheme }
 }
