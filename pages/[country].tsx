@@ -1,11 +1,11 @@
 import BackLink from 'components/BackLink'
 import DetailSection from 'components/DetailSection'
 import Layout from 'components/Layout'
-import { getAllCountries, getSingleCountryBySlug } from 'lib/countries'
+import { getAllCountries, getSingleCountry } from 'lib/countries'
 
 export default function CountryDetail({ country }) {
   return (
-    <Layout title="country">
+    <Layout title={`${country.name} (${country.nativeName})`}>
       <BackLink />
       <DetailSection country={country} />
     </Layout>
@@ -15,7 +15,7 @@ export default function CountryDetail({ country }) {
 export async function getStaticPaths() {
   const paths = (await getAllCountries()).map((country) => ({
     params: {
-      country: country.slug,
+      country: country.name,
     },
   }))
   return {
@@ -25,6 +25,6 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const country = await getSingleCountryBySlug(params.country)
+  const country = await getSingleCountry(params.country)
   return { props: { country } }
 }

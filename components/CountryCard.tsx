@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export function CountryCard({ country }) {
   return (
-    <Link href={'/' + country.slug}>
+    <Link href={'/' + country.name}>
       <a className="block overflow-hidden rounded-md bg-light-elements shadow-md dark:bg-dark-elements">
         <img src={country.flag} alt={`${country.name}'s flag`} />
         <div className="px-7 pt-5 pb-10">

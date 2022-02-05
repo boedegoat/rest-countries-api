@@ -8,29 +8,30 @@ export function format(countries) {
     region: country.region,
     flag: country.flag,
     capital: country.capital || 'N/A',
-    slug: country.name.toLowerCase().replace(/\s/g, '-'),
   }))
 }
 
 export async function formatDetails(country) {
-  const res = await fetch(
-    `${REST_COUNTRIES_API}/alpha?codes=${country.borders.join(',')}`
-  )
-  const borderCountries = (await res.json()).map((country) => country.name)
+  let borderCountries = ['N/A']
+  if ('borders' in country) {
+    const res = await fetch(
+      `${REST_COUNTRIES_API}/alpha?codes=${country.borders.join(',')}`
+    )
+    borderCountries = (await res.json()).map((country) => country.name)
+  }
 
   return {
     name: country.name,
-    nativeName: country.nativeName,
+    nativeName: country.nativeName || 'N/A',
     population: country.population,
     region: country.region,
     subregion: country.subregion,
     flag: country.flag,
     capital: country.capital || 'N/A',
     topLevelDomain: country.topLevelDomain[0],
-    currencies: country.currencies.map((currency) => currency.name),
+    currencies: country.currencies?.map((currency) => currency.name) || ['N/A'],
     languages: country.languages.map((lang) => lang.name),
     borders: borderCountries,
-    slug: country.name.toLowerCase().replace(/\s/g, '-'),
   }
 }
 
@@ -40,10 +41,8 @@ export async function getAllCountries() {
   return format(countries)
 }
 
-export async function getSingleCountryBySlug(slug: string) {
-  const res = await fetch(
-    `${REST_COUNTRIES_API}/name/${slug.replace(/-/g, 's')}?fullText=true`
-  )
+export async function getSingleCountry(name: string) {
+  const res = await fetch(`${REST_COUNTRIES_API}/name/${name}?fullText=true`)
   const country = (await res.json())[0]
   return await formatDetails(country)
 }

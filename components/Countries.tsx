@@ -8,7 +8,7 @@ export default function Countries({ initCountries }) {
   return (
     <div className="wrapper mx-7 space-y-10 py-10">
       {countries?.map((country) => (
-        <CountryCard country={country} key={country.slug} />
+        <CountryCard country={country} key={country.name} />
       ))}
     </div>
   )

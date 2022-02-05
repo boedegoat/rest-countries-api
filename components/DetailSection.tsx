@@ -1,10 +1,12 @@
 export default function DetailSection({ country }) {
-  console.log(country)
-
   return (
     <section className="wrapper py-10">
       {/* flag */}
-      <img src={country.flag} alt={`${country.name}'s flag`} />
+      <img
+        src={country.flag}
+        alt={`${country.name}'s flag`}
+        className="shadow-md"
+      />
       {/* name */}
       <h2 className="my-8 text-2xl font-extrabold">{country.name}</h2>
 
@@ -54,16 +56,18 @@ export default function DetailSection({ country }) {
       {/* border countries */}
       <div className="mt-10">
         <p className="font-semibold">Border Countries:</p>
-        <div className="mt-2 flex flex-wrap gap-3">
-          {country.borders.map((country) => (
-            <div
-              key={country}
-              className="flex-[20%] flex-grow-0 whitespace-nowrap rounded-md bg-light-elements px-6 py-1 shadow-md dark:bg-dark-elements"
-            >
-              {country}
-            </div>
-          ))}
-        </div>
+        {country.borders && (
+          <div className="mt-2 flex flex-wrap gap-3">
+            {country.borders.map((country) => (
+              <div
+                key={country}
+                className="flex-[20%] flex-grow-0 whitespace-nowrap rounded-md bg-light-elements px-6 py-1 shadow-md dark:bg-dark-elements"
+              >
+                {country}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )
