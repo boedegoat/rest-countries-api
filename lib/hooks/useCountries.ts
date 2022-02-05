@@ -2,12 +2,7 @@ import { useState } from 'react'
 import useAtBottomOfThePage from './useAtBottomOfThePage'
 import useUpdateEffect from './useUpdateEffect'
 
-export default function useCountries({
-  region,
-  searchCountry,
-  filteredCountries,
-  initCountries,
-}) {
+export default function useCountries({ filteredCountries, initCountries }) {
   let offset = 5
   let prev = 0
   let next = offset
@@ -20,7 +15,7 @@ export default function useCountries({
   }
 
   const getNewCountriesFromFilter = () => {
-    const inFilterMode = region || searchCountry
+    const inFilterMode = filteredCountries !== null
     const isFilterSuccess = filteredCountries?.status !== 404
     let newCountries
 
@@ -36,14 +31,21 @@ export default function useCountries({
   // Infinite scroll countries
   useAtBottomOfThePage(() => {
     const loadMoreCountries = () => {
-      console.log('load more countries')
       prev += offset
       next += offset
+
+      // if prev equal or higher than countries length
+      // it means that all countries have been rendered
+      const allCountriesRendered =
+        prev >= (filteredCountries ?? initCountries)?.length
+      if (allCountriesRendered) return
+
+      console.log('load more countries')
       const newCountries = getNewCountriesFromFilter()
       setCountries((currCountries) => [...currCountries, ...newCountries])
     }
     loadMoreCountries()
-  }, [region, searchCountry, filteredCountries])
+  }, [filteredCountries])
 
   // check if searchCountry or region is not empty
   // show filteredCountries instead
@@ -57,7 +59,7 @@ export default function useCountries({
       setCountries(newCountries)
     }
     handleFilter()
-  }, [region, searchCountry, filteredCountries])
+  }, [filteredCountries])
 
   return countries
 }

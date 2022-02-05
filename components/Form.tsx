@@ -13,7 +13,6 @@ export default function Form() {
   // Each user typed, new countries will be fetched after 200 ms
   // prettier-ignore
   useDebounce(async () => {
-    if (!searchCountry) return
     const results = await getCountryByName(searchCountry)
     setFilteredCountries(results)
   }, 200, [searchCountry])
@@ -27,6 +26,13 @@ export default function Form() {
     }
     handleRegion()
   }, [region])
+
+  // reset filteredCountries to null if region and searchCountry are empty
+  useEffect(() => {
+    if (!(region && searchCountry)) {
+      setFilteredCountries(null)
+    }
+  }, [region, searchCountry])
 
   return (
     <div className="wrapper mt-8 space-y-9">
