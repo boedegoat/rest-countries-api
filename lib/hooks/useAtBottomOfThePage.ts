@@ -1,6 +1,9 @@
 import { useEffect } from 'react'
 
-export default function useAtBottomOfThePage(callback: () => void) {
+export default function useAtBottomOfThePage(
+  callback: () => void,
+  deps?: any[]
+) {
   const handleScroll = (e) => {
     // scrollTop : the amount we scroll
     // window.innerHeight : height of the visible screen
@@ -18,5 +21,5 @@ export default function useAtBottomOfThePage(callback: () => void) {
   useEffect(() => {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  }, deps || [])
 }

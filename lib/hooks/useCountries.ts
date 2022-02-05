@@ -19,38 +19,43 @@ export default function useCountries({
     return countriesToSlice?.slice(prev, next)
   }
 
-  // Infinite scroll countries
-  const loadMoreCountries = () => {
-    console.log('load more countries')
-    prev += offset
-    next += offset
-    const newCountries = sliceCountries(initCountries)
-    setCountries((currCountries) => [...currCountries, ...newCountries])
-  }
-  useAtBottomOfThePage(() => {
-    loadMoreCountries()
-  })
-
-  // check if searchCountry or region is not empty
-  // show filteredCountries instead
-  const handleFilter = () => {
+  const getNewCountriesFromFilter = () => {
     const inFilterMode = region || searchCountry
     const isFilterSuccess = filteredCountries?.status !== 404
-
-    // reset prev and next
-    prev = 0
-    next = offset
-
     let newCountries
+
     if (inFilterMode) {
       newCountries = isFilterSuccess ? sliceCountries(filteredCountries) : []
     } else {
       newCountries = sliceCountries(initCountries)
     }
 
-    setCountries(newCountries)
+    return newCountries
   }
+
+  // Infinite scroll countries
+  useAtBottomOfThePage(() => {
+    const loadMoreCountries = () => {
+      console.log('load more countries')
+      prev += offset
+      next += offset
+      const newCountries = getNewCountriesFromFilter()
+      setCountries((currCountries) => [...currCountries, ...newCountries])
+    }
+    loadMoreCountries()
+  }, [region, searchCountry, filteredCountries])
+
+  // check if searchCountry or region is not empty
+  // show filteredCountries instead
   useUpdateEffect(() => {
+    const handleFilter = () => {
+      // reset prev and next
+      prev = 0
+      next = offset
+
+      const newCountries = getNewCountriesFromFilter()
+      setCountries(newCountries)
+    }
     handleFilter()
   }, [region, searchCountry, filteredCountries])
 

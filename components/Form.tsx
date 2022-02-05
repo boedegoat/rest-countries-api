@@ -14,15 +14,16 @@ export default function Form() {
   // prettier-ignore
   useDebounce(async () => {
     if (!searchCountry) return
-    const searchResults = await getCountryByName(searchCountry)
-    setFilteredCountries(searchResults)
+    const results = await getCountryByName(searchCountry)
+    setFilteredCountries(results)
   }, 200, [searchCountry])
 
   useEffect(() => {
     async function handleRegion() {
       if (!region) return
-      const filterRegionResults = await getCountryByRegion(region)
-      setFilteredCountries(filterRegionResults)
+      const results = await getCountryByRegion(region)
+      console.log(results)
+      setFilteredCountries(results)
     }
     handleRegion()
   }, [region])
