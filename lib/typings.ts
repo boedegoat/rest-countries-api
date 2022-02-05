@@ -6,3 +6,6 @@ export interface IAppContext {
   filteredCountries: any
   setFilteredCountries: any
 }
+
+export type ThemeType = 'dark' | 'light'
+export type SetThemeType = (theme: ThemeType | 'toggle') => void
