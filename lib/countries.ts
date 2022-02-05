@@ -18,14 +18,18 @@ export async function getAllCountries() {
   return format(countries)
 }
 
-export async function getCountryByName(name: string) {
+export async function getCountryByName(name: string, region: string) {
   const res = await fetch(`${REST_COUNTRIES_API}/name/${name}`)
   const countries = await res.json()
-  return format(countries)
+  return format(countries)?.filter((country) =>
+    region ? country.region.toLowerCase() === region : true
+  )
 }
 
-export async function getCountryByRegion(region: string) {
+export async function getCountryByRegion(name: string, region: string) {
   const res = await fetch(`${REST_COUNTRIES_API}/region/${region}`)
   const countries = await res.json()
-  return format(countries)
+  return format(countries)?.filter((country) =>
+    name ? country.name.toLowerCase().includes(name) : true
+  )
 }

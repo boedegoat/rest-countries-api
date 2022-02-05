@@ -38,7 +38,10 @@ export default function useCountries({ filteredCountries, initCountries }) {
       // it means that all countries have been rendered
       const allCountriesRendered =
         prev >= (filteredCountries ?? initCountries)?.length
-      if (allCountriesRendered) return
+      if (allCountriesRendered) {
+        console.log('all countries have been loaded')
+        return
+      }
 
       console.log('load more countries')
       const newCountries = getNewCountriesFromFilter()

@@ -20,7 +20,7 @@ export default function useDebounce(
 
   // each deps change, restart the timeout
   useEffect(() => {
-    if (deps.every((value) => !value)) return clear()
+    // if (deps.every((value) => !value)) return clear()
     restart()
   }, deps)
 }

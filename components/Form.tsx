@@ -4,6 +4,7 @@ import Dropdown from './Dropdown'
 import { useAppContext } from 'lib/AppProvider'
 import { getCountryByName, getCountryByRegion } from 'lib/countries'
 import { useEffect } from 'react'
+import useUpdateEffect from 'lib/hooks/useUpdateEffect'
 
 export default function Form() {
   const { searchCountry, setSearchCountry, setFilteredCountries, region } =
@@ -13,25 +14,29 @@ export default function Form() {
   // Each user typed, new countries will be fetched after 200 ms
   // prettier-ignore
   useDebounce(async () => {
-    const results = await getCountryByName(searchCountry)
+    if (!searchCountry) {
+      if (region) {
+        const results = await getCountryByRegion(searchCountry, region)
+        setFilteredCountries(results)
+      }
+      return
+    }
+    const results = await getCountryByName(searchCountry, region)
     setFilteredCountries(results)
-  }, 200, [searchCountry])
+  }, 200, [searchCountry, region])
 
   useEffect(() => {
     async function handleRegion() {
       if (!region) return
-      const results = await getCountryByRegion(region)
-      console.log(results)
+      const results = await getCountryByRegion(searchCountry, region)
       setFilteredCountries(results)
     }
     handleRegion()
   }, [region])
 
   // reset filteredCountries to null if region and searchCountry are empty
-  useEffect(() => {
-    if (!(region && searchCountry)) {
-      setFilteredCountries(null)
-    }
+  useUpdateEffect(() => {
+    if (!searchCountry && !region) setFilteredCountries(null)
   }, [region, searchCountry])
 
   return (
