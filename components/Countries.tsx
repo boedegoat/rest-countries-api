@@ -8,7 +8,7 @@ export default function Countries({ initCountries }) {
   // TODO : IMPLEMENT LAZY LIST, SHOW 4 COUNTRY PER NEXT RENDER
   return (
     <div className="wrapper mx-7 my-10 space-y-10">
-      {countries?.slice(0, 4).map((country) => (
+      {countries?.map((country) => (
         <CountryCard country={country} key={country.slug} />
       ))}
     </div>

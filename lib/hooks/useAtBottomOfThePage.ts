@@ -9,7 +9,9 @@ export default function useAtBottomOfThePage(callback: () => void) {
     const visibleScreenHeight = window.innerHeight
     const totalHeight = e.target.documentElement.scrollHeight
 
-    const atTheBottomOfThePage = scrollAmount + visibleScreenHeight + 1 >= totalHeight
+    const atTheBottomOfThePage =
+      scrollAmount + visibleScreenHeight === totalHeight
+
     if (atTheBottomOfThePage) callback()
   }
 

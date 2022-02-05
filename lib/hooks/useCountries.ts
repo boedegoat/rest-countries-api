@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
+import useAtBottomOfThePage from './useAtBottomOfThePage'
+import useUpdateEffect from './useUpdateEffect'
 
 export default function useCountries({
   region,
@@ -6,18 +8,50 @@ export default function useCountries({
   filteredCountries,
   initCountries,
 }) {
-  const [countries, setCountries] = useState(initCountries)
+  let offset = 5
+  let prev = 0
+  let next = offset
+  const [countries, setCountries] = useState<any[]>(
+    initCountries.slice(prev, next)
+  )
+
+  const sliceCountries = (countriesToSlice) => {
+    return countriesToSlice?.slice(prev, next)
+  }
+
+  // Infinite scroll countries
+  const loadMoreCountries = () => {
+    console.log('load more countries')
+    prev += offset
+    next += offset
+    const newCountries = sliceCountries(initCountries)
+    setCountries((currCountries) => [...currCountries, ...newCountries])
+  }
+  useAtBottomOfThePage(() => {
+    loadMoreCountries()
+  })
 
   // check if searchCountry or region is not empty
   // show filteredCountries instead
-  useEffect(() => {
+  const handleFilter = () => {
     const inFilterMode = region || searchCountry
     const isFilterSuccess = filteredCountries?.status !== 404
+
+    // reset prev and next
+    prev = 0
+    next = offset
+
+    let newCountries
     if (inFilterMode) {
-      setCountries(isFilterSuccess ? filteredCountries : [])
+      newCountries = isFilterSuccess ? sliceCountries(filteredCountries) : []
     } else {
-      setCountries(initCountries)
+      newCountries = sliceCountries(initCountries)
     }
+
+    setCountries(newCountries)
+  }
+  useUpdateEffect(() => {
+    handleFilter()
   }, [region, searchCountry, filteredCountries])
 
   return countries
