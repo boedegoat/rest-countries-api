@@ -40,7 +40,7 @@ export default function Form() {
   }, [region, searchCountry])
 
   return (
-    <div className="wrapper mt-8 space-y-9">
+    <div className="wrapper space-y-9 pt-8">
       {/* Search Bar */}
       <div className="flex items-center space-x-5 rounded-md bg-light-elements px-8 py-4 text-light-input shadow-sm focus-within:shadow-md dark:bg-dark-elements dark:text-dark-text">
         <SearchIcon className="w-6" />

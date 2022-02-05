@@ -6,7 +6,7 @@ export default function Countries({ initCountries }) {
   const countries = useCountries({ initCountries, ...useAppContext() })
 
   return (
-    <div className="wrapper mx-7 my-10 space-y-10">
+    <div className="wrapper mx-7 space-y-10 py-10">
       {countries?.map((country) => (
         <CountryCard country={country} key={country.slug} />
       ))}

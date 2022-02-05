@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import Header from './Header'
 
 export default function Layout({ children, title }) {
   return (
@@ -6,6 +7,7 @@ export default function Layout({ children, title }) {
       <Head>
         <title>{title}</title>
       </Head>
+      <Header />
       <main>{children}</main>
     </>
   )
