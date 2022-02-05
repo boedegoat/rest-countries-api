@@ -8,7 +8,7 @@ export default function Layout({ children, title }) {
         <title>{title}</title>
       </Head>
       <Header />
-      <main>{children}</main>
+      <main className="wrapper">{children}</main>
     </>
   )
 }

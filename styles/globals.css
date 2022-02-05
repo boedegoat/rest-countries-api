@@ -12,6 +12,6 @@
 
 @layer components {
   .wrapper {
-    @apply px-5;
+    @apply mx-auto max-w-lg px-5 md:max-w-3xl lg:max-w-5xl xl:max-w-7xl;
   }
 }
