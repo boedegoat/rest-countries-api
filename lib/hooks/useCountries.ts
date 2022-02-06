@@ -3,7 +3,7 @@ import useAtBottomOfThePage from './useAtBottomOfThePage'
 import useUpdateEffect from './useUpdateEffect'
 
 export default function useCountries({ filteredCountries, initCountries }) {
-  let offset = 5
+  let offset = 8
   let prev = 0
   let next = offset
   const [countries, setCountries] = useState<any[]>(
