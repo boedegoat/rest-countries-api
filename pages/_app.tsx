@@ -14,13 +14,12 @@ function MyApp({ Component, pageProps, router }: AppProps) {
       <AppProvider>
         <Header />
         {/* Make exit animation works */}
-        <AnimatePresence exitBeforeEnter initial={false}>
-          <Component
-            {...pageProps}
-            canonical={url}
-            key={url}
-            onExitComplete={() => window.scrollTo(0, 0)}
-          />
+        <AnimatePresence
+          exitBeforeEnter
+          initial={false}
+          onExitComplete={() => window.scrollTo(0, 0)}
+        >
+          <Component {...pageProps} canonical={url} key={url} />
         </AnimatePresence>
       </AppProvider>
     </ThemeProvider>

@@ -3,40 +3,48 @@ import useDebounce from 'lib/hooks/useDebounce'
 import Dropdown from './Dropdown'
 import { useAppContext } from 'lib/AppProvider'
 import { getCountryByName, getCountryByRegion } from 'lib/countries'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import useUpdateEffect from 'lib/hooks/useUpdateEffect'
 
 export default function Form() {
   const { searchCountry, setSearchCountry, setFilteredCountries, region } =
     useAppContext()
+  const userHasSearched = useRef(false)
 
   // Handle user search for country
   // Each user typed, new countries will be fetched after 200 ms
   // prettier-ignore
   useDebounce(async () => {
     if (!searchCountry) {
-      if (region) {
-        const results = await getCountryByRegion(searchCountry, region)
+      if (region && userHasSearched.current) {
+        const results = await getCountryByRegion(region, searchCountry)
         setFilteredCountries(results)
       }
+      userHasSearched.current = false
       return
+    }
+    
+    if (!userHasSearched.current) {
+      userHasSearched.current = true
     }
     const results = await getCountryByName(searchCountry, region)
     setFilteredCountries(results)
-  }, 200, [searchCountry, region])
+  }, 200, [searchCountry, region, userHasSearched.current])
 
   useEffect(() => {
     async function handleRegion() {
-      if (!region) return
       const results = await getCountryByRegion(region, searchCountry)
       setFilteredCountries(results)
     }
+    if (!region) return
     handleRegion()
   }, [region])
 
   // reset filteredCountries to null if region and searchCountry are empty
   useUpdateEffect(() => {
-    if (!searchCountry && !region) setFilteredCountries(null)
+    if (!searchCountry && !region) {
+      setFilteredCountries(null)
+    }
   }, [region, searchCountry])
 
   return (
