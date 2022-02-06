@@ -16,7 +16,6 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         {/* Make exit animation works */}
         <AnimatePresence
           exitBeforeEnter
-          initial={false}
           onExitComplete={() => window.scrollTo(0, 0)}
         >
           <Component {...pageProps} canonical={url} key={url} />

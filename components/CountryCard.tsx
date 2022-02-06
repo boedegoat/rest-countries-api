@@ -1,9 +1,14 @@
+import { motion } from 'framer-motion'
 import Link from 'next/link'
 
 export function CountryCard({ country }) {
   return (
-    <Link href={'/' + country.name} scroll={false}>
-      <a className="block overflow-hidden rounded-md bg-light-elements shadow-md dark:bg-dark-elements">
+    <Link href={'/' + country.name} scroll={false} passHref>
+      <motion.a
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-10 block overflow-hidden rounded-md bg-light-elements shadow-md dark:bg-dark-elements"
+      >
         <img src={country.flag} alt={`${country.name}'s flag`} />
         <div className="px-7 pt-5 pb-10">
           <h3 className="text-lg font-extrabold">{country.name}</h3>
@@ -20,7 +25,7 @@ export function CountryCard({ country }) {
             </p>
           </div>
         </div>
-      </a>
+      </motion.a>
     </Link>
   )
 }
