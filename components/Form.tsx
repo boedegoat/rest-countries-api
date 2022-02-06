@@ -28,7 +28,7 @@ export default function Form() {
   useEffect(() => {
     async function handleRegion() {
       if (!region) return
-      const results = await getCountryByRegion(searchCountry, region)
+      const results = await getCountryByRegion(region, searchCountry)
       setFilteredCountries(results)
     }
     handleRegion()

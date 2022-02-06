@@ -13,18 +13,23 @@ export default function CountryDetail({ country }) {
 }
 
 export async function getStaticPaths() {
-  const paths = (await getAllCountries()).map((country) => ({
+  const paths = (await getAllCountries()).slice(0, 32).map((country) => ({
     params: {
       country: country.name,
     },
   }))
   return {
     paths,
-    fallback: false,
+    fallback: 'blocking',
   }
 }
 
 export async function getStaticProps({ params }) {
   const country = await getSingleCountry(params.country)
+  if (!country) {
+    return {
+      notFound: true,
+    }
+  }
   return { props: { country } }
 }
