@@ -5,7 +5,7 @@ import { getAllCountries, getSingleCountry } from 'lib/countries'
 
 export default function CountryDetail({ country }) {
   return (
-    <Layout title={`${country.name} (${country.nativeName})`}>
+    <Layout title={country.name}>
       <BackLink />
       <DetailSection country={country} />
     </Layout>
