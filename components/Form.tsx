@@ -7,8 +7,14 @@ import { useEffect, useRef } from 'react'
 import useUpdateEffect from 'lib/hooks/useUpdateEffect'
 
 export default function Form() {
-  const { searchCountry, setSearchCountry, setFilteredCountries, region } =
-    useAppContext()
+  const {
+    searchCountry,
+    setSearchCountry,
+    filteredCountries,
+    setFilteredCountries,
+    region,
+    setLoading,
+  } = useAppContext()
   const userHasSearched = useRef(false)
 
   // Handle user search for country
@@ -27,12 +33,14 @@ export default function Form() {
     if (!userHasSearched.current) {
       userHasSearched.current = true
     }
+    setLoading(true)
     const results = await getCountryByName(searchCountry, region)
     setFilteredCountries(results)
   }, 200, [searchCountry, region, userHasSearched.current])
 
   useEffect(() => {
     async function handleRegion() {
+      setLoading(true)
       const results = await getCountryByRegion(region, searchCountry)
       setFilteredCountries(results)
     }
@@ -46,6 +54,10 @@ export default function Form() {
       setFilteredCountries(null)
     }
   }, [region, searchCountry])
+
+  useEffect(() => {
+    setLoading(false)
+  }, [filteredCountries])
 
   return (
     <div className="wrapper space-y-9 pt-8 md:flex md:items-center md:justify-between md:space-y-0">

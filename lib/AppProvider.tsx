@@ -11,6 +11,7 @@ export default function AppProvider({ children }) {
   const [filteredCountries, setFilteredCountries] = useState(null)
   const [searchCountry, setSearchCountry] = useState('')
   const [region, setRegion] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const value: IAppContext = {
     searchCountry,
@@ -19,6 +20,8 @@ export default function AppProvider({ children }) {
     setRegion,
     filteredCountries,
     setFilteredCountries,
+    loading,
+    setLoading,
   }
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>

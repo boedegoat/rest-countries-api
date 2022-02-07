@@ -4,7 +4,8 @@ import { CountryCard } from './CountryCard'
 import Masonry from 'react-masonry-css'
 
 export default function Countries({ initCountries }) {
-  const countries = useCountries({ initCountries, ...useAppContext() })
+  const { loading, ...appContext } = useAppContext()
+  const countries = useCountries({ initCountries, ...appContext })
 
   return (
     <Masonry
@@ -16,9 +17,19 @@ export default function Countries({ initCountries }) {
         1280: 3,
       }}
     >
-      {countries?.map((country) => (
-        <CountryCard country={country} key={country.name} />
-      ))}
+      {!loading
+        ? countries?.map((country) => (
+            <CountryCard country={country} key={country.name} />
+          ))
+        : Array.from({ length: 8 }).map((_, id) => (
+            <CountryCardSkeleton key={id} />
+          ))}
     </Masonry>
+  )
+}
+
+function CountryCardSkeleton() {
+  return (
+    <div className="mb-10 block h-[340px] animate-pulse overflow-hidden rounded-md border bg-gray-500/20 dark:bg-dark-elements"></div>
   )
 }
